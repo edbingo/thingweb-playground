@@ -26,3 +26,4 @@ log.json
 
 # junit test results
 junit-tests.xml
+packages/validator/src/index.ts

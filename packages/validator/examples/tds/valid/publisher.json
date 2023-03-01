@@ -1,0 +1,61 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:dev:ops:32473-WoTPublisher-1234",
+    "title": "MyPublisher",
+    "description": "A Thing demonstrating how to use observe and unobserve property",
+    "securityDefinitions": {
+        "nosec_sc": {
+            "scheme": "nosec"
+        }
+    },
+    "security": [
+        "nosec_sc"
+    ],
+    "properties": {
+        "oneOfTest": {
+            "readOnly":true,
+            "writeOnly": false,
+            "oneOf": [
+                {
+                    "type": "string"
+                }, 
+                {
+                    "type": "integer"
+                }, 
+                {
+                    "type": "null"
+                }
+            ],
+            "forms": [
+                {
+                    "href": "mqtt://iot.eclipse.org/oneOfTest",
+                    "op":"observeproperty",
+                    "mqv:controlPacketValue": "SUBSCRIBE"
+                },
+                {
+                    "href": "mqtt://iot.eclipse.org/oneOfTest",
+                    "op": "unobserveproperty",
+                    "mqv:controlPacketValue": "UNSUBSCRIBE"
+                }
+            ]
+        },
+        "maxItemsTest": {
+            "readOnly": true,
+            "writeOnly": false,
+            "type": "array",
+            "items":{"type":"integer"},
+            "maxItems":5,
+            "minItems": 2,
+            "forms": [
+                {
+                    "href": "mqtt://iot.eclipse.org/maxItemsTest",
+                    "op": "observeproperty"
+                },
+                {
+                    "href": "mqtt://iot.eclipse.org/maxItemsTest",
+                    "op": "unobserveproperty"
+                }
+            ]
+        }
+    }
+}

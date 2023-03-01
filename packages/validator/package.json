@@ -1,31 +1,27 @@
 {
-  "name": "thingweb-ts-validator",
-  "version": "0.0.0",
-  "description": "",
-  "main": "build/src/index.js",
-  "types": "build/src/index.d.ts",
-  "files": [
-    "build/src"
-  ],
-  "license": "Apache-2.0",
-  "keywords": [],
+  "name": "validator",
+  "version": "1.0.0",
+  "description": "Validate TMs and TDs",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "gts lint",
-    "clean": "gts clean",
-    "compile": "tsc",
-    "fix": "gts fix",
-    "prepare": "npm run compile",
-    "pretest": "npm run compile",
-    "posttest": "npm run lint"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
-    "@types/node": "^14.11.2",
-    "gts": "^3.1.1",
-    "typescript": "~4.7.0"
+    "@types/jsonld": "^1.5.8",
+    "eslint": "^8.33.0",
+    "jsonld": "^8.1.1",
+    "prettier": "^2.8.3",
+    "typescript": "^4.9.4"
   },
   "dependencies": {
+    "ajv": "^8.12.0",
+    "ajv-formats": "^2.1.1",
+    "ajv-formats-draft2019": "^1.6.1",
     "commander": "^10.0.0",
-    "junit-report-builder": "^3.0.1"
+    "json-dup-key-validator": "^1.0.3",
+    "junit-report-builder": "^3.0.1",
+    "node-fetch": "^3.3.0"
   }
 }
