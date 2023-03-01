@@ -147,32 +147,39 @@ async function checkThing(fileName: string, thingString: string, suite: any, isT
         }
 
         start = Date.now()
-        validateJsonLd(thingJson).then((result) => {
-            if (result.valid) {
-                report.jsonld = "passed"
-                passTest(suite, "JSON LD Validation", result.time)
-                console.log(fileName + " - schema: " + report.schema + ", defaults: " + report.defaults + ", jsonld: " + report.jsonld)
-                resolve()
-            } else {
-                report.jsonld = "failed"
-                failTest(suite, "JSON LD Validation", result.time, "JSON-LD validation failed.")
-                console.log("JSON-LD validation failed.")
-                console.log(fileName + " - schema: " + report.schema + ", defaults: " + report.defaults + ", jsonld: " + report.jsonld)
-                resolve()
+        if (!myArgs.offline) {
+            validateJsonLd(thingJson).then((result) => {
+                if (result.valid) {
+                    report.jsonld = "passed"
+                    passTest(suite, "JSON LD Validation", result.time)
+                    console.log(fileName + " - schema: " + report.schema + ", defaults: " + report.defaults + ", jsonld: " + report.jsonld)
+                    resolve()
+                } else {
+                    report.jsonld = "failed"
+                    failTest(suite, "JSON LD Validation", result.time, "JSON-LD validation failed.")
+                    console.log("JSON-LD validation failed.")
+                    console.log(fileName + " - schema: " + report.schema + ", defaults: " + report.defaults + ", jsonld: " + report.jsonld)
+                    resolve()
+                }
+            })
+        } else {
+            report.jsonld = "skipped"
+            skipTest(suite, "JSON LD Validation")
+            console.log(fileName + " - schema: " + report.schema + ", defaults: " + report.defaults)
+            resolve()
+        }
+
+            async function validateJsonLd(jsonLd: any) {
+                try {
+                    let start = Date.now()
+                    await jsonld.toRDF(jsonLd, { format: 'application/nquads' })
+                    let time = Date.now() - start
+                    return { valid: true, time: time }
+                } catch (error) {
+                    return { valid: false, time: 0 }
+                }
             }
         })
-
-        async function validateJsonLd(jsonLd: any) {
-            try {
-                let start = Date.now()
-                await jsonld.toRDF(jsonLd, { format: 'application/nquads' })
-                let time = Date.now() - start
-                return {valid: true, time: time}
-            } catch (error) {
-                return {valid: false, time: 0}
-            }
-        }
-    })
 }
 
 function passTest(suite: any, name: string, time: number) {
