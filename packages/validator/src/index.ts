@@ -68,37 +68,6 @@ function folderScanner(currentInput: string, results: string[]) {
     }
     else if (currentInput.endsWith(".json") || currentInput.endsWith(".jsonld")) {
         results.push(currentInput)
-        /**
-        let suite = builder.testSuite().name(currentInput.split("/").slice(-1))
-        let thingString = fs.readFileSync(currentInput, "utf-8")
-        let fail = false
-        try {
-            JSON.parse(thingString)
-            suite.testCase()
-                .className("validator")
-                .name("JSON Validation")
-        }
-        catch (err) {
-            logFunc("JSON Validation failed:")
-            logFunc(err)
-            suite.testCase()
-                .className("cli")
-                .name("JSON Validation")
-                .failure(err)
-            fail = true
-        }
-        const thingJson = JSON.parse(thingString)
-        if (!fail && thingJson['@type'] == "tm:ThingModel") {
-            console.log("adding tm" + currentInput.split("/").slice(-1) + " to queue")
-            return { thingString: thingString, suite: suite, isTm: false }
-        } else if (!fail) {
-            console.log("adding td " + currentInput.split("/").slice(-1) + " to queue")
-            return { thingString: thingString, suite: suite, isTm: true}
-        } else {
-            console.log("Invalid JSON file")
-            return "invalid json file"
-        }
-        */
     }
     else {
         // do nothing
@@ -114,26 +83,17 @@ function jsonValidate(pathString: string): Promise<void> {
     try {
         thingJson = JSON.parse(thingString)
         let end = Date.now()
-        suite.testCase()
-            .className("validator")
-            .name("JSON Validation")
-            .time(end - start)
+        passTest(suite, "JSON Validation", end - start)
         if (thingJson['@type'] == "tm:ThingModel") {
-            // console.log("adding tm" + fileName + " to queue")
             return checkThing(fileName, thingString, suite, false)
         } else {
-            // console.log("adding td " + fileName + " to queue")
             return checkThing(fileName, thingString, suite, true)
         }
     } catch (err) {
         logFunc("JSON Validation failed for " + pathString + ":")
         logFunc(err)
         let end = Date.now()
-        suite.testCase()
-            .className("cli")
-            .name("JSON Validation")
-            .time(end - start)
-            .failure(err)
+        failTest(suite, "JSON Validation", end - start, err)
         return Promise.resolve()
     }
 }
@@ -160,11 +120,7 @@ async function checkThing(fileName: string, thingString: string, suite: any, isT
         if (valid) {
             report.schema = "passed"
             let end = Date.now()
-            suite.testCase()
-                .className("validator")
-                .name("Schema Validation")
-                .time(end - start)
-
+            passTest(suite, "Schema Validation", end - start)
             if (isTD) {
                 start = Date.now()
                 ajv.addSchema(fullTdSchema, 'fulltd')
@@ -172,34 +128,20 @@ async function checkThing(fileName: string, thingString: string, suite: any, isT
                 if (fullValid) {
                     report.defaults = "passed"
                     end = Date.now()
-                    suite.testCase()
-                        .className("validator")
-                        .name("Defaults Validation")
-                        .time(end - start)
+                    passTest(suite, "Defaults Validation", end - start)
                 } else {
                     report.defaults = "warning"
                     end = Date.now()
-                    suite.testCase()
-                        .className("validator")
-                        .name("Defaults Validation")
-                        .time(end - start)
-                        .error(ajv.errorsText())
+                    errorTest(suite, "Defaults Validation", end - start, ajv.errorsText())
                 }
             }
 
         } else {
             report.schema = "failed"
             const end = Date.now()
-            suite.testCase()
-                .className("validator")
-                .name("Schema Validation")
-                .time(end - start)
-                .failure(ajv.errorsText())
+            failTest(suite, "Schema Validation", end - start, ajv.errorsText())
             report.defaults = "skipped"
-            suite.testCase()
-                .className("validator")
-                .name("Defaults Validation")
-                .skipped()
+            skipTest(suite, "Defaults Validation")
             logFunc("X JSON Schema validation failed:")
             logFunc(ajv.errorsText())
         }
@@ -208,102 +150,17 @@ async function checkThing(fileName: string, thingString: string, suite: any, isT
         validateJsonLd(thingJson).then((result) => {
             if (result.valid) {
                 report.jsonld = "passed"
-                suite.testCase()
-                    .className("validator")
-                    .name("JSON LD Validation")
-                    .time(result.time)
-
-                console.table(report)
-
+                passTest(suite, "JSON LD Validation", result.time)
                 console.log(fileName + " - schema: " + report.schema + ", defaults: " + report.defaults + ", jsonld: " + report.jsonld)
                 resolve()
             } else {
                 report.jsonld = "failed"
-                suite.testCase()
-                    .className("validator")
-                    .name("JSON LD Validation")
-                    .time(result.time)
-                    .failure("JSON-LD validation failed.")
+                failTest(suite, "JSON LD Validation", result.time, "JSON-LD validation failed.")
                 console.log("JSON-LD validation failed.")
-                console.log(report)
+                console.log(fileName + " - schema: " + report.schema + ", defaults: " + report.defaults + ", jsonld: " + report.jsonld)
                 resolve()
             }
         })
-
-        /**
-        validateJsonLd(thingJson).then(() => {
-            report.jsonld = "passed"
-            const end = Date.now()
-            suite.testCase()
-                .className("validator")
-                .name("JSON LD Validation")
-                .time(end - start)
-            console.log("JSON-LD validation passed.")
-            console.log(report)
-        }).catch((err) => {
-            console.log("JSON-LD validation failed.")
-            const end = Date.now()
-            suite.testCase()
-                .className("validator")
-                .name("JSON LD Validation")
-                .time(end - start)
-                .failure(err)
-            report.jsonld = "failed"
-            console.log("Hint: Make sure you have internet connection and the JSON-LD context is valid.")
-            console.log(report)
-        })
-    })
-    */
-
-        /**
-        // json ld validation
-        if (!myArgs.offline) {
-            start = Date.now()
-            jsonld.toRDF(thingJson, {
-                format: 'application/nquads'
-            }).then((nquads: any) => {
-                report.jsonld = "passed"
-                console.log("JSON-LD validation passed.")
-                const end = Date.now()
-                suite.testCase()
-                    .className("validator")
-                    .name("JSON LD Validation")
-                    .time(end - start)
-     
-                console.log(report)
-     
-     
-            }, (err: string) => {
-                report.jsonld = "failed"
-                const end = Date.now()
-                suite.testCase()
-                    .className("validator")
-                    .name("JSON LD Validation")
-                    .time(end - start)
-                    .failure(err)
-                logFunc("X JSON-LD validation failed:")
-                logFunc("Hint: Make sure you have internet connection available.")
-                logFunc('> ' + err)
-                console.log(report)
-     
-            })
-        }
-        */
-
-        /**
-        function validateJsonLd(jsonLd: any) {
-            return new Promise((resolve, reject) => {
-                try {
-                    let start = Date.now()
-                    jsonld.toRDF(jsonLd, { format: 'application/nquads' })
-                        .then()
-                } catch (error) {
-                    console.log("JSON-LD validation failed.");
-                    reject(error)
-                }
-            })
-        }
-        */
 
         async function validateJsonLd(jsonLd: any) {
             try {
@@ -316,4 +173,34 @@ async function checkThing(fileName: string, thingString: string, suite: any, isT
             }
         }
     })
+}
+
+function passTest(suite: any, name: string, time: number) {
+    suite.testCase()
+        .className("validator")
+        .name(name)
+        .time(time)
+}
+
+function failTest(suite: any, name: string, time: number, error: string) {
+    suite.testCase()
+        .className("validator")
+        .name(name)
+        .time(time)
+        .failure(error)
+}
+
+function errorTest(suite: any, name: string, time: number, error: string) {
+    suite.testCase()
+        .className("validator")
+        .name(name)
+        .time(time)
+        .error(error)
+}
+
+function skipTest(suite: any, name: string) {
+    suite.testCase()
+        .className("validator")
+        .name(name)
+        .skipped()
 }
