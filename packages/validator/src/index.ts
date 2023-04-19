@@ -43,7 +43,7 @@ const logFunc = console.log;
 // if no input given, automatically add examples folder
 let inputArray: string[] = myArgs.input;
 if (inputArray === undefined) {
-    inputArray = ["../examples/tds"];
+    inputArray = ["./MinimalThing.json"];
 }
 
 // helper methods for junit report
