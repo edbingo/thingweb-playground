@@ -110,7 +110,7 @@ function checkThing(fileName: string, thingString: string, suite: builder.TestSu
         let start = Date.now();
         let ajv = new Ajv({ strict: false });
         ajv = addFormats(ajv);
-        //        ajv = apply(ajv)
+        //      ajv = apply(ajv)
         isTD ? ajv.addSchema(tdSchema, "td") : ajv.addSchema(tmSchema, "tm");
 
         // validate schema
@@ -187,7 +187,7 @@ function checkThing(fileName: string, thingString: string, suite: builder.TestSu
 }
 
 // check json validation, and return promises
-function validate(pathString: string): Promise<void> {
+export function validate(pathString: string): Promise<void> {
     const fileName = pathString.split("/").slice(-1).toString();
     const suite = builder.testSuite().name(fileName);
     const thingString = fs.readFileSync(pathString, "utf-8");
@@ -211,6 +211,10 @@ function validate(pathString: string): Promise<void> {
     }
 }
 
+export function tadd(a: number, b: number): number {
+    return a + b;
+}
+
 // scan input folder for all json files
 const thingPaths: string[] = [];
 for (const input of inputArray) {
@@ -218,13 +222,13 @@ for (const input of inputArray) {
     scanFolder(input, thingPaths);
 }
 
-// validate all json files
+// validate all json files, and receive promises
 const promises = [];
 for (const pathString of thingPaths) {
     promises.push(validate(pathString));
 }
 
-// write junit report
+// wait for promises to resolve, then write junit report
 Promise.all(promises)
     .then(() => {
         if (myArgs.junit) {
@@ -239,5 +243,3 @@ Promise.all(promises)
             builder.writeTo("report.xml");
         }
     });
-
-module.exports = { jsonValidate: validate, folderScanner: scanFolder };
