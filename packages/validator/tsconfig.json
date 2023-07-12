@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
-        "target": "es6",
+        "target": "esnext",
         "lib": ["dom"],
         "skipLibCheck": false,
-        "module": "commonjs",
+        "module": "es2022",
         "rootDir": "src",
         "outDir": "dist",
         "alwaysStrict": true,
