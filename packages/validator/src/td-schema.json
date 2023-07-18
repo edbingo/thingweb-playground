@@ -55,7 +55,11 @@
     },
     "subprotocol": {
       "type": "string",
-      "examples": ["longpoll", "websub", "sse"]
+      "examples": [
+        "longpoll",
+        "websub",
+        "sse"
+      ]
     },
     "thing-context-td-uri-v1": {
       "type": "string",
@@ -314,7 +318,10 @@
       }
     },
     "multipleOfDefinition": {
-      "type": ["integer", "number"],
+      "type": [
+        "integer",
+        "number"
+      ],
       "exclusiveMinimum": 0
     },
     "expectedResponse": {
@@ -366,11 +373,17 @@
           "$ref": "#/definitions/additionalResponsesDefinition"
         }
       },
-      "required": ["href"],
+      "required": [
+        "href"
+      ],
       "additionalProperties": true
     },
     "form_element_property": {
-      "allOf": [{ "$ref": "#/definitions/form_element_base" }],
+      "allOf": [
+        {
+          "$ref": "#/definitions/form_element_base"
+        }
+      ],
       "type": "object",
       "properties": {
         "op": {
@@ -402,20 +415,32 @@
       "additionalProperties": true
     },
     "form_element_action": {
-      "allOf": [{ "$ref": "#/definitions/form_element_base" }],
+      "allOf": [
+        {
+          "$ref": "#/definitions/form_element_base"
+        }
+      ],
       "type": "object",
       "properties": {
         "op": {
           "oneOf": [
             {
               "type": "string",
-              "enum": ["invokeaction", "queryaction", "cancelaction"]
+              "enum": [
+                "invokeaction",
+                "queryaction",
+                "cancelaction"
+              ]
             },
             {
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": ["invokeaction", "queryaction", "cancelaction"]
+                "enum": [
+                  "invokeaction",
+                  "queryaction",
+                  "cancelaction"
+                ]
               }
             }
           ]
@@ -424,20 +449,30 @@
       "additionalProperties": true
     },
     "form_element_event": {
-      "allOf": [{ "$ref": "#/definitions/form_element_base" }],
+      "allOf": [
+        {
+          "$ref": "#/definitions/form_element_base"
+        }
+      ],
       "type": "object",
       "properties": {
         "op": {
           "oneOf": [
             {
               "type": "string",
-              "enum": ["subscribeevent", "unsubscribeevent"]
+              "enum": [
+                "subscribeevent",
+                "unsubscribeevent"
+              ]
             },
             {
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": ["subscribeevent", "unsubscribeevent"]
+                "enum": [
+                  "subscribeevent",
+                  "unsubscribeevent"
+                ]
               }
             }
           ]
@@ -446,7 +481,11 @@
       "additionalProperties": true
     },
     "form_element_root": {
-      "allOf": [{ "$ref": "#/definitions/form_element_base" }],
+      "allOf": [
+        {
+          "$ref": "#/definitions/form_element_base"
+        }
+      ],
       "type": "object",
       "properties": {
         "op": {
@@ -486,15 +525,25 @@
         }
       },
       "additionalProperties": true,
-      "required": ["op"]
+      "required": [
+        "op"
+      ]
     },
     "form": {
       "$comment": "This is NOT for validation purposes but for automatic generation of TS types. For more info, please see: https://github.com/w3c/wot-thing-description/pull/1319#issuecomment-994950057",
       "oneOf": [
-        { "$ref": "#/definitions/form_element_property" },
-        { "$ref": "#/definitions/form_element_action" },
-        { "$ref": "#/definitions/form_element_event" },
-        { "$ref": "#/definitions/form_element_root" }
+        {
+          "$ref": "#/definitions/form_element_property"
+        },
+        {
+          "$ref": "#/definitions/form_element_action"
+        },
+        {
+          "$ref": "#/definitions/form_element_event"
+        },
+        {
+          "$ref": "#/definitions/form_element_root"
+        }
       ]
     },
     "property_element": {
@@ -615,7 +664,9 @@
           }
         }
       },
-      "required": ["forms"],
+      "required": [
+        "forms"
+      ],
       "additionalProperties": true
     },
     "action_element": {
@@ -665,7 +716,9 @@
           "type": "boolean"
         }
       },
-      "required": ["forms"],
+      "required": [
+        "forms"
+      ],
       "additionalProperties": true
     },
     "event_element": {
@@ -712,7 +765,9 @@
           "$ref": "#/definitions/dataSchema"
         }
       },
-      "required": ["forms"],
+      "required": [
+        "forms"
+      ],
       "additionalProperties": true
     },
     "base_link_element": {
@@ -732,7 +787,9 @@
         },
         "hreflang": {
           "anyOf": [
-            { "$ref": "#/definitions/bcp47_string" },
+            {
+              "$ref": "#/definitions/bcp47_string"
+            },
             {
               "type": "array",
               "items": {
@@ -742,7 +799,9 @@
           ]
         }
       },
-      "required": ["href"],
+      "required": [
+        "href"
+      ],
       "additionalProperties": true
     },
     "link_element": {
@@ -757,7 +816,9 @@
             "properties": {
               "sizes": {}
             },
-            "required": ["sizes"]
+            "required": [
+              "sizes"
+            ]
           }
         },
         {
@@ -765,10 +826,15 @@
             "description": "A basic link element should not contain icon or tm:extends",
             "properties": {
               "rel": {
-                "enum": ["icon", "tm:extends"]
+                "enum": [
+                  "icon",
+                  "tm:extends"
+                ]
               }
             },
-            "required": ["rel"]
+            "required": [
+              "rel"
+            ]
           }
         }
       ]
@@ -788,7 +854,9 @@
               "pattern": "[0-9]*x[0-9]+"
             }
           },
-          "required": ["rel"]
+          "required": [
+            "rel"
+          ]
         }
       ]
     },
@@ -800,7 +868,10 @@
           "scheme": "ace:ACESecurityScheme",
           "ace:as": "coaps://as.example.com/token",
           "ace:audience": "coaps://rs.example.com",
-          "ace:scopes": ["limited", "special"],
+          "ace:scopes": [
+            "limited",
+            "special"
+          ],
           "ace:cnonce": true
         }
       ],
@@ -823,7 +894,9 @@
           "pattern": ".+:.*"
         }
       },
-      "required": ["scheme"],
+      "required": [
+        "scheme"
+      ],
       "additionalProperties": true
     },
     "noSecurityScheme": {
@@ -843,10 +916,14 @@
         },
         "scheme": {
           "type": "string",
-          "enum": ["nosec"]
+          "enum": [
+            "nosec"
+          ]
         }
       },
-      "required": ["scheme"],
+      "required": [
+        "scheme"
+      ],
       "additionalProperties": true
     },
     "autoSecurityScheme": {
@@ -866,13 +943,19 @@
         },
         "scheme": {
           "type": "string",
-          "enum": ["auto"]
+          "enum": [
+            "auto"
+          ]
         }
       },
       "not": {
-        "required": ["name"]
+        "required": [
+          "name"
+        ]
       },
-      "required": ["scheme"],
+      "required": [
+        "scheme"
+      ],
       "additionalProperties": true
     },
     "comboSecurityScheme": {
@@ -894,7 +977,9 @@
             },
             "scheme": {
               "type": "string",
-              "enum": ["combo"]
+              "enum": [
+                "combo"
+              ]
             },
             "oneOf": {
               "type": "array",
@@ -904,7 +989,10 @@
               }
             }
           },
-          "required": ["scheme", "oneOf"],
+          "required": [
+            "scheme",
+            "oneOf"
+          ],
           "additionalProperties": true
         },
         {
@@ -924,7 +1012,9 @@
             },
             "scheme": {
               "type": "string",
-              "enum": ["combo"]
+              "enum": [
+                "combo"
+              ]
             },
             "allOf": {
               "type": "array",
@@ -934,7 +1024,10 @@
               }
             }
           },
-          "required": ["scheme", "allOf"],
+          "required": [
+            "scheme",
+            "allOf"
+          ],
           "additionalProperties": true
         }
       ]
@@ -956,17 +1049,27 @@
         },
         "scheme": {
           "type": "string",
-          "enum": ["basic"]
+          "enum": [
+            "basic"
+          ]
         },
         "in": {
           "type": "string",
-          "enum": ["header", "query", "body", "cookie", "auto"]
+          "enum": [
+            "header",
+            "query",
+            "body",
+            "cookie",
+            "auto"
+          ]
         },
         "name": {
           "type": "string"
         }
       },
-      "required": ["scheme"],
+      "required": [
+        "scheme"
+      ],
       "additionalProperties": true
     },
     "digestSecurityScheme": {
@@ -986,21 +1089,34 @@
         },
         "scheme": {
           "type": "string",
-          "enum": ["digest"]
+          "enum": [
+            "digest"
+          ]
         },
         "qop": {
           "type": "string",
-          "enum": ["auth", "auth-int"]
+          "enum": [
+            "auth",
+            "auth-int"
+          ]
         },
         "in": {
           "type": "string",
-          "enum": ["header", "query", "body", "cookie", "auto"]
+          "enum": [
+            "header",
+            "query",
+            "body",
+            "cookie",
+            "auto"
+          ]
         },
         "name": {
           "type": "string"
         }
       },
-      "required": ["scheme"],
+      "required": [
+        "scheme"
+      ],
       "additionalProperties": true
     },
     "apiKeySecurityScheme": {
@@ -1020,17 +1136,28 @@
         },
         "scheme": {
           "type": "string",
-          "enum": ["apikey"]
+          "enum": [
+            "apikey"
+          ]
         },
         "in": {
           "type": "string",
-          "enum": ["header", "query", "body", "cookie", "uri", "auto"]
+          "enum": [
+            "header",
+            "query",
+            "body",
+            "cookie",
+            "uri",
+            "auto"
+          ]
         },
         "name": {
           "type": "string"
         }
       },
-      "required": ["scheme"],
+      "required": [
+        "scheme"
+      ],
       "additionalProperties": true
     },
     "bearerSecurityScheme": {
@@ -1050,7 +1177,9 @@
         },
         "scheme": {
           "type": "string",
-          "enum": ["bearer"]
+          "enum": [
+            "bearer"
+          ]
         },
         "authorization": {
           "$ref": "#/definitions/anyUri"
@@ -1063,13 +1192,21 @@
         },
         "in": {
           "type": "string",
-          "enum": ["header", "query", "body", "cookie", "auto"]
+          "enum": [
+            "header",
+            "query",
+            "body",
+            "cookie",
+            "auto"
+          ]
         },
         "name": {
           "type": "string"
         }
       },
-      "required": ["scheme"],
+      "required": [
+        "scheme"
+      ],
       "additionalProperties": true
     },
     "pskSecurityScheme": {
@@ -1089,13 +1226,17 @@
         },
         "scheme": {
           "type": "string",
-          "enum": ["psk"]
+          "enum": [
+            "psk"
+          ]
         },
         "identity": {
           "type": "string"
         }
       },
-      "required": ["scheme"],
+      "required": [
+        "scheme"
+      ],
       "additionalProperties": true
     },
     "oAuth2SecurityScheme": {
@@ -1115,7 +1256,9 @@
         },
         "scheme": {
           "type": "string",
-          "enum": ["oauth2"]
+          "enum": [
+            "oauth2"
+          ]
         },
         "authorization": {
           "$ref": "#/definitions/anyUri"
@@ -1146,12 +1289,18 @@
             },
             {
               "type": "string",
-              "enum": ["code", "client", "device"]
+              "enum": [
+                "code",
+                "client",
+                "device"
+              ]
             }
           ]
         }
       },
-      "required": ["scheme"],
+      "required": [
+        "scheme"
+      ],
       "additionalProperties": true
     },
     "securityScheme": {
@@ -1232,7 +1381,9 @@
           "type": "string"
         }
       },
-      "required": ["instance"]
+      "required": [
+        "instance"
+      ]
     },
     "links": {
       "type": "array",
@@ -1323,6 +1474,11 @@
       "$ref": "#/definitions/thing-context"
     }
   },
-  "required": ["title", "security", "securityDefinitions", "@context"],
+  "required": [
+    "title",
+    "security",
+    "securityDefinitions",
+    "@context"
+  ],
   "additionalProperties": true
 }

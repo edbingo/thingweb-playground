@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "esnext",
+        "target": "ES6",
         "lib": ["dom"],
         "skipLibCheck": false,
         "module": "es2022",
@@ -25,7 +25,8 @@
         "noStrictGenericChecks": false,
         "noImplicitThis": true,
         "skipDefaultLibCheck": false,
-        "allowJs": true
+        "allowJs": true,
+        "strictNullChecks": true
     },
     "include": ["src/**/*", "src/**/*.json"],
 }
