@@ -8,17 +8,14 @@
     "repository": "https://github.com/thingweb-playground",
     "main": "dist/index.js",
     "devDependencies": {
-        "@types/chai": "^4.3.4",
         "@types/jest": "^29.5.2",
         "@types/jsonld": "^1.5.8",
         "@types/junit-report-builder": "^3.0.0",
         "@types/node": "^18.15.5",
-        "@types/progress": "^2.0.5",
         "@types/sinon": "^10.0.13",
         "@typescript-eslint/eslint-plugin": "^5.55.0",
         "@typescript-eslint/parser": "^5.55.0",
         "ajv-formats": "^2.1.1",
-        "chai": "^4.3.7",
         "eslint": "^8.44.0",
         "eslint-config-prettier": "^8.8.0",
         "eslint-config-standard": "^17.0.0",
@@ -27,7 +24,6 @@
         "eslint-plugin-workspaces": "^0.8.0",
         "jsonld": "^8.1.1",
         "prettier": "^2.8.8",
-        "progress": "^2.0.3",
         "sinon": "^15.0.3",
         "ts-jest": "^29.1.1",
         "ts-node": "^10.9.1",
@@ -44,6 +40,6 @@
         "node-fetch": "^3.3.0"
     },
     "scripts": {
-        "test": "ts-mocha test/test.ts"
+        "test": "jest"
     }
 }

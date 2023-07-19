@@ -1,8 +1,9 @@
-import { createThingObject, parseJSON, validateSchema } from '../src/validation'
+import { checkThingType, createThingObject, parseJSON, validateSchema } from "../src/validation";
 
 const minimalThing = "./test/MinimalThing.json";
 const invalidThing = "./test/invalidThing.json";
 const validThing = "./test/validThing.json";
+const validTM = "./test/validTM.json";
 
 describe('Thing Object Creation', () => {
   it('should create a Thing object', () => {
@@ -58,3 +59,19 @@ describe("Perform Schema Validation", () => {
     expect(validateSchema(thing)).toBeFalsy();
   });
 })
+
+describe("Recognise TM or TD", () => {
+  it ("should recognise a TD", () => {
+    const thing = createThingObject(validThing);
+    parseJSON(thing);
+    checkThingType(thing);
+    expect(thing.isTM).toBeFalsy();
+  });
+  it ("should recognise a TM", () => {
+    const thing = createThingObject(validTM);
+    parseJSON(thing);
+    expect(thing.isTM).toBeFalsy(); // isTM is set to false by default
+    checkThingType(thing);
+    expect(thing.isTM).toBeTruthy();
+  });
+});
