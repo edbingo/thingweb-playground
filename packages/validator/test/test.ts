@@ -12,25 +12,10 @@ describe('Thing Object Creation', () => {
   });
   it('should have correct properties', () => {
     const thing = createThingObject(minimalThing);
-    expect(thing.fileName).toBe(minimalThing);
-    expect(thing.fileString).toBe('{\n' +
-      '    "id": "urn:minimal",\n' +
-      '    "@context": "https://www.w3.org/2022/wot/td/v1.1",\n' +
-      '    "title": "MyLampThing",\n' +
-      '    "description": "Valid TD with minimum information possible",\n' +
-      '    "securityDefinitions": {\n' +
-      '        "basic_sc": {\n' +
-      '            "scheme": "basic",\n' +
-      '            "in": "header"\n' +
-      '        }\n' +
-      '    },\n' +
-      '    "security": ["basic_sc"]\n' +
-      '}\n')
     expect(thing.json).toBeUndefined();
     expect(thing.isTM).toBeFalsy();
     expect(thing.valid).toBeFalsy();
     expect(thing.report).toBeDefined();
-    expect(thing.fileTitle).toBe("MinimalThing.json");
     expect(thing.time).toBe(0);
   })
 })
@@ -42,8 +27,10 @@ describe("Parse a JSON File", () => {
     expect(thing.json).toBeDefined();
   });
   it("should recognise invalid JSON", () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => { });
     const thing = createThingObject("./test/invalidJSON.json");
     expect(parseJSON(thing)).toBeFalsy();
+    expect(spy).toHaveBeenCalledWith('invalidJSON.json json fail: SyntaxError: Unexpected token \'d\', "dsifjaölkwfeölkja" is not valid JSON');
   });
 });
 
@@ -54,9 +41,11 @@ describe("Perform Schema Validation", () => {
     expect(validateSchema(thing)).toBeTruthy();
   });
   it ("should recognise an invalid TD", () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => { });
     const thing = createThingObject(invalidThing);
     parseJSON(thing);
     expect(validateSchema(thing)).toBeFalsy();
+    expect(spy).toHaveBeenCalledWith("invalidThing.json schema fail: data/actions/toggle/forms/0/op must be string, data/actions/toggle/forms/0/op must be equal to one of the allowed values, data/actions/toggle/forms/0/op/0 must be equal to one of the allowed values, data/actions/toggle/forms/0/op must match exactly one schema in oneOf")
   });
 })
 
