@@ -74,7 +74,7 @@ export function validateSchema(thing: Thing): boolean {
     // Validate against schema
     const valid = ajv.validate(thing.isTM ? "tm" : "td", thing.json);
     if (!valid) {
-        console.error(`Error validating Schema in ${thing.fileTitle}: ` + ajv.errorsText());
+        console.error(`${thing.fileTitle} schema fail: ` + ajv.errorsText());
         thing.report.schema.result = Result.Invalid;
         thing.report.schema.message = ajv.errorsText();
         thing.report.schema.time = Date.now() - time;
@@ -90,7 +90,7 @@ export function validateSchema(thing: Thing): boolean {
                 thing.report.defaults.time = Date.now() - time;
             } else {
                 thing.report.defaults.result = Result.Warning;
-                console.error(`Warning: ${thing.fileTitle} does not conform to the TD Defaults schema: ` + ajv.errorsText());
+                console.log(`${thing.fileTitle} schema defaults warning: ` + ajv.errorsText());
                 thing.report.defaults.message = ajv.errorsText();
                 thing.report.defaults.time = Date.now() - time;
             }
@@ -106,7 +106,7 @@ export function parseJSON(thing: Thing): boolean {
         thing.report.json.result = Result.Valid;
         thing.report.json.time = Date.now() - time;
     } catch (e) {
-        console.error(`Error parsing JSON file in ${thing.fileTitle}: ` + e);
+        console.error(`${thing.fileTitle} json fail: ` + e);
         thing.report.json.result = Result.Invalid;
         thing.report.json.message = e;
         thing.report.json.time = Date.now() - time;
@@ -124,7 +124,7 @@ export async function validateJsonLd(thing: Thing): Promise<boolean> {
         thing.report.jsonld.time = Date.now() - time;
         return Promise.resolve(true);
     } catch (error) {
-        console.error(`Error validating JSON-LD file in ${thing.fileTitle}: ` + error);
+        console.error(`${thing.fileTitle} json-ld fail: ` + error);
         thing.report.jsonld.result = Result.Invalid;
         thing.report.jsonld.time = Date.now() - time;
         thing.report.jsonld.message = error;
