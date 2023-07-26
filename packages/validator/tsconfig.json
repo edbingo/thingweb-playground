@@ -3,7 +3,7 @@
         "target": "ES6",
         "lib": ["dom"],
         "skipLibCheck": false,
-        "module": "es2022",
+        "module": "ES6",
         "rootDir": "src",
         "outDir": "dist",
         "alwaysStrict": true,
