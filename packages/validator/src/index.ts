@@ -35,11 +35,11 @@ const program = new Command();
 // 4. Validate TD JSON-LD
 
 program
-    .version('2.0.1')
+    .version('2.0.0')
     .arguments('<files...>')
     .description('Validate JSON files against the Thing Description schema')
     .option('-o, --offline', 'Run in offline mode', false)
-    .option('-j, --junit', 'Generate a JUnit report')
+    .option('-j, --junit', 'Generate a JUnit report', false)
 program.parse(process.argv);
 const options = program.opts();
 
@@ -158,13 +158,6 @@ export async function validateTD(thing: Thing): Promise<boolean> {
     // Determine if TD or TM
     checkThingType(thing);
 
-    
-    // Validate against schema
-    if (!validateSchema(thing)) {
-        thing.time = Date.now() - time;
-        thing.valid = false;
-        return Promise.resolve(false);
-    }
     
     // Validate against schema
     if (!validateSchema(thing)) {
