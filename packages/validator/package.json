@@ -40,6 +40,8 @@
         "node-fetch": "^3.3.0"
     },
     "scripts": {
-        "test": "jest"
+        "test": "jest",
+        "build": "tsc",
+        "start": "node ./dist/index.js"
     }
 }
